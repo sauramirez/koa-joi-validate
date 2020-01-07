@@ -1,4 +1,4 @@
-const joi = require('joi')
+const joi = require('@hapi/joi')
 
 /**
  * Helper function to validate an object against the provided schema,
@@ -12,9 +12,9 @@ function validateObject (object = {}, label, schema, options) {
   // Skip validation if no schema is provided
   if (schema) {
     // Validate the object against the provided schema
-    const { error, value } = joi.validate(object, schema, options)
-    if (error) {
-      // Throw error with custom message if validation failed
+    try {
+      joi.assert(object, schema, options)
+    } catch (error) {
       throw new Error(`Invalid ${label} - ${error.message}`)
     }
   }

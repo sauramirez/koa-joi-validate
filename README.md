@@ -35,20 +35,20 @@ const validate = require('koa-joi-validate')
 const app = new Koa()
 
 app.use(validate({
-  headers: {
+  headers: joi({
     // Request headers Joi validation object
     "x-request-id": joi.string().alphanum().length(32)
-  },
-  query: {
+  }),
+  query: joi.object({
     // URL query string Joi validation object
     userid: joi.string().required()
-  },
-  params: {
+  }),
+  params: joi.object({
     // URL path parameters Joi validation object
-  }
-  body: {
+  }),
+  body: joi.object({
     // POST body Joi validation object
-  }
+  })
 }))
 
 app.use(async ctx => {
@@ -64,10 +64,10 @@ Here is another basic example, mounting a validator on a specific route using [k
 const router = new Router()
 
 const loginValidator = validate({
-  body: {
+  body: Joi.object({
     username: Joi.string().required(),
     password: Joi.string().required()
-  }
+  })
 })
 
 router.post('/login', loginValidator, async ctx => {
